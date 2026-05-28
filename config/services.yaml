@@ -8,7 +8,7 @@ services:
         public: true
 
     App\Controller\:
-        resource: '../src/Controller/'
+        resource: '%kernel.project_dir%/src/Controller/'
         tags: ['controller.service_arguments']
 
     App\Service\ArticleRepository:

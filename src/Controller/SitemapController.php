@@ -12,14 +12,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route(defaults: ['_format' => 'xml'])]
 class SitemapController extends AbstractController
 {
-    public function __construct(
-        private readonly ArticleRepository $repository,
-    ) {}
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            ArticleRepository::class,
+        ]);
+    }
+
+    private function getRepository(): ArticleRepository
+    {
+        return $this->container->get(ArticleRepository::class);
+    }
 
     #[Route('/sitemap.xml', name: 'sitemap', methods: ['GET'])]
     public function sitemap(): Response
     {
-        $articles = $this->repository->findAll();
+        $repo = $this->getRepository();
+        $articles = $repo->findAll();
 
         // Group by translation_key so each entry shows all lang alternates
         $grouped = [];
@@ -30,7 +39,7 @@ class SitemapController extends AbstractController
                 $seen[$key] = true;
                 $grouped[] = [
                     'article' => $article,
-                    'translations' => $this->repository->findTranslations($key),
+                    'translations' => $repo->findTranslations($key),
                 ];
             }
         }
