@@ -1,0 +1,43 @@
+workerman:
+    runtime_dir: '%kernel.project_dir%/var'
+    pid_file: '%kernel.project_dir%/var/run/workerman.pid'
+    log_file: '%kernel.project_dir%/var/log/workerman.log'
+    stdout_file: '%kernel.project_dir%/var/log/workerman.stdout.log'
+    stop_timeout: 2
+    cache_warmup_timeout: 30
+
+    servers:
+        -   name: slop-driven-development
+            listen: http://0.0.0.0:8080
+            processes: 4
+            reuse_port: true
+            serve_files: true
+            root_dir: '%kernel.project_dir%/public'
+            static_files:
+                allowed_extensions:
+                    - css
+                    - js
+                    - woff2
+                    - svg
+                    - png
+                    - jpg
+                    - jpeg
+                    - gif
+                    - ico
+                    - webp
+
+    reload_strategy:
+        exception:
+            active: true
+            allowed_exceptions:
+                - Symfony\Component\HttpKernel\Exception\HttpExceptionInterface
+        max_requests:
+            active: true
+            requests: 1000
+            dispersion: 20
+        file_monitor:
+            active: false
+        memory:
+            active: false
+        always:
+            active: false

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Slop Driven Development{% endblock %}</title>
+    <meta name="description" content="{% block description %}Slop Driven Development{% endblock %}">
+    {% block meta %}{% endblock %}
+
+    <style>{{ inline_asset('css/highlight-github-dark.min.css')|raw }}</style>
+    <style>{{ inline_asset('css/style.css')|raw }}</style>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1 class="site-title">
+                <a href="/{{ lang }}">Slop Driven Development</a>
+            </h1>
+            <nav class="lang-switcher">
+                {% for l in available_langs %}
+                    <a href="/{{ l }}" class="lang-link {% if l == lang %}active{% endif %}">{{ l|upper }}</a>
+                {% endfor %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="container"{% if is_rtl(lang) %} dir="rtl"{% endif %}>
+        {% block body %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; {{ 'now'|date('Y') }} Slop Driven Development &mdash; {{ __('powered_by', lang) }} <a href="https://github.com/crazy-goat/workerman-bundle" target="_blank" rel="noopener">Workerman Bundle</a></p>
+        </div>
+    </footer>
+
+    <script>{{ inline_asset('js/highlight.min.js')|raw }}</script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

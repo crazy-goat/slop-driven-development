@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    {% for group in groups %}
+    <url>
+        <loc>{{ absolute_url(group.article.path) }}</loc>
+        <lastmod>{{ group.article.date|date('Y-m-d') }}</lastmod>
+        {% for lang, translation in group.translations %}
+        <xhtml:link rel="alternate" hreflang="{{ lang }}" href="{{ absolute_url(translation.path) }}"/>
+        {% endfor %}
+    </url>
+    {% endfor %}
+</urlset>

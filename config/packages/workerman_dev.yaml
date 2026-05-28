@@ -1,0 +1,15 @@
+workerman:
+    reload_strategy:
+        file_monitor:
+            active: true
+            source_dir:
+                - '%kernel.project_dir%/src'
+                - '%kernel.project_dir%/config'
+                - '%kernel.project_dir%/templates'
+                - '%kernel.project_dir%/content'
+            file_pattern:
+                - '*.php'
+                - '*.yaml'
+                - '*.twig'
+                - '*.md'
+                - '*.css'

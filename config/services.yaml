@@ -1,0 +1,22 @@
+parameters:
+    default_lang: '%env(BLOG_DEFAULT_LANG)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    App\Service\ArticleRepository:
+        arguments:
+            $contentDir: '%kernel.project_dir%/content'
+
+    App\Service\MarkdownParser:
+
+    App\Twig\InlineAssetExtension:
+        arguments:
+            $publicDir: '%kernel.project_dir%/public'

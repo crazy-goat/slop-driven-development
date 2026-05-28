@@ -1,0 +1,34 @@
+{
+    "name": "reasonix/microblog",
+    "type": "project",
+    "description": "Slop Driven Development — self-hosted blog Markdown na Symfony + Workerman",
+    "require": {
+        "php": ">=8.2",
+        "symfony/framework-bundle": "^7.0",
+        "symfony/console": "^7.0",
+        "symfony/dotenv": "^7.0",
+        "symfony/yaml": "^7.0",
+        "symfony/twig-bundle": "^7.0",
+        "league/commonmark": "^2.4",
+        "crazy-goat/workerman-bundle": "^0.20",
+        "symfony/monolog-bundle": "^3.10",
+        "nyholm/psr7": "^1.8",
+        "nyholm/psr7-server": "^1.1"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "scripts": {
+        "serve": "php bin/console microblog:serve"
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
+        }
+    }
+}

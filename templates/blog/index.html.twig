@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if tag is defined %}
+        {{ __('tag', lang) }}: {{ tag }} — Slop Driven Development
+    {% else %}
+        Slop Driven Development
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <section class="blog-index">
+        <h2>
+            {% if tag is defined %}
+                {{ __('articles_tagged', lang) }} <em>{{ tag }}</em>
+            {% else %}
+                {{ __('latest_posts', lang) }}
+            {% endif %}
+        </h2>
+
+        {% if articles is empty %}
+            <p class="empty-state">{{ __('no_articles', lang) }}</p>
+        {% else %}
+            <div class="article-list">
+                {% for article in articles %}
+                    <article class="article-preview">
+                        <h3 class="article-title">
+                            <a href="{{ article.path }}">{{ article.title }}</a>
+                        </h3>
+                        <p class="article-meta">
+                            {{ __('date', lang) }} {{ article.date|date('Y-m-d') }}{% if article.author %}, {{ __('author', lang) }} {{ article.author }}{% endif %}
+                        </p>
+                        {% if article.abstract %}
+                            <p class="article-description">{{ article.abstract|raw }}</p>
+                        {% else %}
+                            <p class="article-description">{{ article.description }}</p>
+                        {% endif %}
+                        {% if article.tags is not empty %}
+                            <div class="article-tags">
+                                {% for tag in article.tags %}
+                                    <a href="/{{ article.lang }}/tag/{{ tag }}" class="tag">#{{ tag }}</a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </article>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

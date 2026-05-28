@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ article.title }} — Slop Driven Development{% endblock %}
+{% block description %}{{ article.description }}{% endblock %}
+
+{% block meta %}
+    <meta name="keywords" content="{{ article.keywords|join(', ') }}">
+    <link rel="canonical" href="{{ article.canonical ?? currentUrl }}">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ article.title }}">
+    <meta property="og:description" content="{{ article.description }}">
+    <meta property="og:locale" content="{{ article.lang }}_{{ article.lang|upper }}">
+    {% for lang, translation in translations %}
+        <meta property="og:locale:alternate" content="{{ lang }}_{{ lang|upper }}">
+    {% endfor %}
+    <meta property="og:url" content="{{ article.canonical ?? absolute_url(article.path) }}">
+
+    <!-- hreflang -->
+    {% for lang, translation in translations %}
+        <link rel="alternate" hreflang="{{ lang }}" href="{{ translation.canonical ?? absolute_url(translation.path) }}">
+    {% endfor %}
+    <link rel="alternate" hreflang="x-default" href="{{ absolute_url(article.path) }}">
+{% endblock %}
+
+{% block body %}
+    <article class="blog-article">
+        <header class="article-header">
+            <h2 class="article-title">{{ article.title }}</h2>
+            <p class="article-meta">
+                {{ __('date', lang) }} {{ article.date|date('Y-m-d') }}{% if article.author %}, {{ __('author', lang) }} {{ article.author }}{% endif %}
+            </p>
+
+            {% if article.tags is not empty %}
+                <div class="article-tags">
+                    {% for tag in article.tags %}
+                        <a href="/{{ article.lang }}/tag/{{ tag }}" class="tag">#{{ tag }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </header>
+
+        {% if article.abstract %}
+            <p class="lead">{{ article.abstract|raw }}</p>
+            <hr>
+        {% endif %}
+
+        <div class="article-content">
+            {{ article.html|raw }}
+        </div>
+
+        <footer class="article-footer">
+            {% if translations|length > 1 %}
+                <div class="translations">
+                    <h3>{{ __('translations', article.lang) }}</h3>
+                    <ul>
+                        {% for lang, translation in translations %}
+                            <li>
+                                <a href="{{ translation.path }}" hreflang="{{ lang }}">{{ lang|upper }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </footer>
+    </article>
+{% endblock %}
