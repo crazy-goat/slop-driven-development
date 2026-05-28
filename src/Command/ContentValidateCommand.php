@@ -92,7 +92,11 @@ class ContentValidateCommand extends Command
                 continue;
             }
 
-            $markdown = file_get_contents($file->getRealPath());
+            $path = $file->getPathname();
+            if ($path === false || $path === '') {
+                continue;
+            }
+            $markdown = @file_get_contents($path);
             if ($markdown === false) {
                 continue;
             }
