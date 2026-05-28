@@ -43,15 +43,14 @@
 
         {% if article.abstract %}
             <p class="lead">{{ article.abstract|raw }}</p>
-            <hr>
         {% endif %}
 
         <div class="article-content">
             {{ article.html|raw }}
         </div>
 
-        <footer class="article-footer">
-            {% if translations|length > 1 %}
+        {% if translations|length > 1 %}
+            <footer class="article-footer">
                 <div class="translations">
                     <h3>{{ __('translations', article.lang) }}</h3>
                     <ul>
@@ -62,7 +61,7 @@
                         {% endfor %}
                     </ul>
                 </div>
-            {% endif %}
-        </footer>
+            </footer>
+        {% endif %}
     </article>
 {% endblock %}
