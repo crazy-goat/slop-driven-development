@@ -20,3 +20,7 @@ services:
     App\Twig\InlineAssetExtension:
         arguments:
             $publicDir: '%kernel.project_dir%/public'
+
+    App\Command\ContentValidateCommand:
+        arguments:
+            $contentDir: '%kernel.project_dir%/content'
