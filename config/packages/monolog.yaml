@@ -2,5 +2,5 @@ monolog:
     handlers:
         main:
             type: stream
-            path: '%kernel.project_dir%/var/log/blog.log'
-            level: debug
+            path: 'php://stderr'
+            level: notice

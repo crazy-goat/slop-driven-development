@@ -11,20 +11,36 @@ workerman:
             listen: http://0.0.0.0:8080
             processes: 4
             reuse_port: true
-            serve_files: true
-            root_dir: '%kernel.project_dir%/public'
-            static_files:
-                allowed_extensions:
-                    - css
-                    - js
-                    - woff2
-                    - svg
-                    - png
-                    - jpg
-                    - jpeg
-                    - gif
-                    - ico
-                    - webp
+
+    build:
+        exclude_patterns:
+            - '#/Tests?/#'
+            - '#/tests?/#'
+            - '#/docs?/#'
+            - '#/Documentation/#'
+            - '#/doc/#'
+            - '#/examples/#'
+            - '#\.md$#'
+            - '#\.rst$#'
+            - '#CHANGELOG#'
+            - '#CHANGE_LOG#'
+            - '#FAQ#'
+            - '#CONTRIBUTING#'
+            - '#\.gitignore$#'
+            - '#Makefile$#'
+            - '#phpunit#'
+            - '#\.github/#'
+        exclude_files:
+            - source
+            - buildroot
+            - pkgroot
+            - downloads
+            - log
+            - spc
+            - spc.tar.gz
+        sfx:
+            file: '%kernel.project_dir%/buildroot/bin/micro.sfx'
+            sha256: '91c8ca0bb6a80c52f7e29d3c7e50c69e9e7b996f9bed7df3a128b025f82b7cf3'
 
     reload_strategy:
         exception:

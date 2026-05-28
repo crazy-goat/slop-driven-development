@@ -1,0 +1,3 @@
+php-version: 8.5
+extensions: ctype,dom,filter,mbstring,pcntl,phar,posix,sockets,tokenizer,xml,xmlwriter
+sapi: micro

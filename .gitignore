@@ -18,3 +18,16 @@
 # OS
 .DS_Store
 Thumbs.db
+
+/build/
+
+.reasonix/
+
+# spc build artifacts
+/source/
+/downloads/
+/pkgroot/
+/buildroot/
+/log/
+/spc
+/spc.tar.gz
