@@ -7,8 +7,13 @@ services:
         autoconfigure: true
         public: true
 
-    App\Controller\:
-        resource: '%kernel.project_dir%/src/Controller/'
+    App\Controller\BlogController:
+        tags: ['controller.service_arguments']
+
+    App\Controller\SitemapController:
+        tags: ['controller.service_arguments']
+
+    App\Controller\AssetController:
         tags: ['controller.service_arguments']
 
     App\Service\ArticleRepository:
