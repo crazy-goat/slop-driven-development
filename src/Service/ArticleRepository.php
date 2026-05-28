@@ -73,32 +73,44 @@ class ArticleRepository
                     continue;
                 }
 
+                // Lang from filename (en.md → en), override front matter
+                $lang = $file->getBasename('.' . $file->getExtension());
+
+                // Slug from parent directory name
+                $slugDir = $file->getPathInfo()->getFilename();
+
+                // Year/month from grandparent directories
+                $monthDir = $file->getPathInfo()->getPathInfo()->getFilename();
+                $yearDir = $file->getPathInfo()->getPathInfo()->getPathInfo()->getFilename();
+
+                // Use front matter values, fall back to directory-derived
+                $effectiveSlug = !empty($fm['slug']) ? $fm['slug'] : $slugDir;
+                $effectiveLang = !empty($fm['lang']) ? $fm['lang'] : $lang;
+
                 // Validate required fields
-                if (empty($fm['title']) || empty($fm['slug']) || empty($fm['lang']) || empty($fm['translation_key'])) {
+                if (empty($fm['title']) || empty($fm['translation_key'])) {
                     $this->logger->warning('Skipping file with missing required fields: {file}', [
                         'file' => $file->getRealPath(),
                     ]);
                     continue;
                 }
 
-                // Build URL path from file path relative to contentDir
-                $relativePath = substr($file->getPathname(), strlen(rtrim($this->contentDir, '/')) + 1);
-                $relativePath = str_replace('\\', '/', $relativePath);
-                $relativePath = dirname($relativePath) . '/' . pathinfo($relativePath, PATHINFO_FILENAME);
-
-                // Format: /{lang}/{year}/{month}/{slug}
+                // Build URL: /{lang}/{year}/{month}/{slug}
                 $date = is_int($fm['date']) ? (new \DateTimeImmutable())->setTimestamp($fm['date']) : new \DateTimeImmutable($fm['date']);
                 $path = sprintf(
                     '/%s/%s/%s/%s',
-                    $fm['lang'],
+                    $effectiveLang,
                     $date->format('Y'),
                     $date->format('m'),
-                    $fm['slug']
+                    $effectiveSlug
                 );
 
                 $article = Article::fromFrontMatter($fm, $parsed['html'], $path);
 
-                $key = $article->lang . ':' . $article->slug;
+                // Override lang and slug with dir-derived values
+                $article->lang = $effectiveLang;
+                $article->slug = $effectiveSlug;
+
                 $this->articles[$article->path] = $article;
                 $this->byLang[$article->lang][] = $article;
                 $this->bySlug[$article->lang][$article->slug] = $article;

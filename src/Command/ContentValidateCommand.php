@@ -97,6 +97,9 @@ class ContentValidateCommand extends Command
                 continue;
             }
 
+            $lang = $file->getBasename('.' . $file->getExtension());
+            $slug = $file->getPathInfo()->getFilename();
+
             // Parse only front matter (faster than full parse)
             $fm = null;
             if (preg_match('/^---\s*\n(.*?)\n---/s', $markdown, $m)) {
@@ -113,9 +116,9 @@ class ContentValidateCommand extends Command
 
             $articles[] = [
                 'path' => $file->getRealPath(),
-                'lang' => $fm['lang'] ?? 'unknown',
+                'lang' => $lang,
                 'translation_key' => $fm['translation_key'],
-                'slug' => $fm['slug'] ?? 'unknown',
+                'slug' => $slug,
                 'fm' => $fm,
             ];
         }
@@ -188,7 +191,7 @@ class ContentValidateCommand extends Command
      */
     private function validateMetadata(array $articles, SymfonyStyle $io): void
     {
-        $requiredFields = ['title', 'date', 'slug', 'lang', 'translation_key', 'description', 'author', 'abstract'];
+        $requiredFields = ['title', 'date', 'translation_key', 'description', 'author', 'abstract'];
         $recommendedFields = ['tags', 'keywords'];
 
         foreach ($articles as $article) {
