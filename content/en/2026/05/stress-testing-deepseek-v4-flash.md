@@ -1,6 +1,6 @@
 ---
 title: Why I spent 3 hours stress-testing deepseek v4 flash — the $2.97 experiment that changed my mind
-date: 2026-05-19
+date: 2026-05-22
 slug: stress-testing-deepseek-v4-flash
 lang: en
 translation_key: stress-testing-deepseek-v4-flash
