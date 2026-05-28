@@ -7,46 +7,48 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route(defaults: ['_format' => 'txt'])]
 class AssetController
 {
-    #[Route('/fonts/{name}', name: 'font', methods: ['GET'], requirements: ['name' => '.+\.woff2$'])]
-    public function font(string $name): Response
+    private function serve(string $subpath, string $mimeType): Response
     {
-        $path = __DIR__ . '/../../public/fonts/' . $name;
-
+        $path = __DIR__ . '/../../public/' . $subpath;
         if (!is_file($path)) {
             return new Response('Not Found', 404);
         }
-
         $content = file_get_contents($path);
         if ($content === false) {
             return new Response('Not Found', 404);
         }
-
         return new Response($content, 200, [
-            'Content-Type' => 'font/woff2',
+            'Content-Type' => $mimeType,
             'Cache-Control' => 'public, max-age=31536000',
         ]);
     }
 
-    #[Route('/favicon.svg', name: 'favicon', methods: ['GET'])]
+    #[Route('/img/{name}', name: 'asset_img', methods: ['GET'], requirements: ['name' => '.+\.(png|jpg|jpeg|gif|svg|webp)$'])]
+    public function image(string $name): Response
+    {
+        $mimeTypes = [
+            'png' => 'image/png',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'svg' => 'image/svg+xml',
+            'webp' => 'image/webp',
+        ];
+        $ext = pathinfo($name, PATHINFO_EXTENSION);
+        return $this->serve('img/' . $name, $mimeTypes[$ext] ?? 'application/octet-stream');
+    }
+
+    #[Route('/fonts/{name}', name: 'asset_font', methods: ['GET'], requirements: ['name' => '.+\.woff2$'])]
+    public function font(string $name): Response
+    {
+        return $this->serve('fonts/' . $name, 'font/woff2');
+    }
+
+    #[Route('/favicon.svg', name: 'asset_favicon', methods: ['GET'])]
     public function favicon(): Response
     {
-        $path = __DIR__ . '/../../public/favicon.svg';
-
-        if (!is_file($path)) {
-            return new Response('Not Found', 404);
-        }
-
-        $content = file_get_contents($path);
-        if ($content === false) {
-            return new Response('Not Found', 404);
-        }
-
-        return new Response($content, 200, [
-            'Content-Type' => 'image/svg+xml',
-            'Cache-Control' => 'public, max-age=31536000',
-        ]);
+        return $this->serve('favicon.svg', 'image/svg+xml');
     }
 }
