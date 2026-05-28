@@ -19,9 +19,11 @@
                 <a href="/{{ lang }}">Slop Driven Development</a>
             </h1>
             <nav class="lang-switcher">
-                {% for l in available_langs %}
-                    <a href="/{{ l }}" class="lang-link {% if l == lang %}active{% endif %}">{{ l|upper }}</a>
-                {% endfor %}
+                {% block lang_switcher %}
+                    {% for l in available_langs %}
+                        <a href="/{{ l }}" class="lang-link {% if l == lang %}active{% endif %}">{{ l|upper }}</a>
+                    {% endfor %}
+                {% endblock %}
             </nav>
         </div>
     </header>

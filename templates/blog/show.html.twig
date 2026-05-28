@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block lang_switcher %}
+    {% for l in available_langs %}
+        <a href="{% if translations[l] is defined %}{{ translations[l].path }}{% else %}/{{ l }}{% endif %}"
+           class="lang-link {% if l == lang %}active{% endif %}">{{ l|upper }}</a>
+    {% endfor %}
+{% endblock %}
+
 {% block title %}{{ article.title }} — Slop Driven Development{% endblock %}
 {% block description %}{{ article.description }}{% endblock %}
 
@@ -49,19 +56,6 @@
             {{ article.html|raw }}
         </div>
 
-        {% if translations|length > 1 %}
-            <footer class="article-footer">
-                <div class="translations">
-                    <h3>{{ __('translations', article.lang) }}</h3>
-                    <ul>
-                        {% for lang, translation in translations %}
-                            <li>
-                                <a href="{{ translation.path }}" hreflang="{{ lang }}">{{ lang|upper }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </footer>
-        {% endif %}
+
     </article>
 {% endblock %}
