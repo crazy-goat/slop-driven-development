@@ -1,5 +1,5 @@
 parameters:
-    default_lang: '%env(BLOG_DEFAULT_LANG)%'
+    default_lang: 'pl'
 
 services:
     _defaults:

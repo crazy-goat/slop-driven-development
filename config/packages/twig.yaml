@@ -1,4 +1,2 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
-    globals:
-        default_lang: '%env(BLOG_DEFAULT_LANG)%'
